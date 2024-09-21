@@ -6,13 +6,11 @@ function handleA(
   skillLevel,
   setSkillLevel
 ) {
-  if (
-    activity &&
-    skillLevel &&
-    !selectedA.some((entry) => entry.startsWith(activity))
-  ) {
-    const entry = `${activity} - ${skillLevel}`;
-    setSelectedA((prev) => [...prev, entry]);
+  if (activity && skillLevel && !selectedA.hasOwnProperty(activity)) {
+    setSelectedA((prev) => ({
+      ...prev,
+      [activity]: skillLevel,
+    }));
     setActivity('');
     setSkillLevel('');
   }
