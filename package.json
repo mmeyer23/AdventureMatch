@@ -1,8 +1,4 @@
 {
-<<<<<<< HEAD
-  "dependencies": {
-    "express": "^4.21.0"
-=======
   "name": "axolotl",
   "version": "1.0.0",
   "description": "App for finding adventure buddies",
@@ -34,7 +30,8 @@
     "webpack-dev-server": "^5.1.0"
   },
   "dependencies": {
-    "path": "^0.12.7"
->>>>>>> 2db2f34 (webpack is set up)
+    "path": "^0.12.7",
+    "express": "^4.21.0"
+
   }
 }
