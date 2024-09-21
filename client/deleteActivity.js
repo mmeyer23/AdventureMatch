@@ -1,7 +1,9 @@
-function deleteActivity(index, setSelectedA) {
-  setSelectedA((other) => {
+function deleteActivity(activity, setSelectedA) {
+  setSelectedA((prevSelected) => {
     // Only filter out items that are not empty strings
-    return other.filter((_, i) => i !== index);
+    const newSelected = { ...prevSelected };
+    delete newSelected[activity];
+    return newSelected;
   });
 }
 

@@ -1,11 +1,8 @@
 import React from 'react';
-<<<<<<< HEAD
-import { Link } from 'react-router-dom';
-=======
 import { Link, useNavigate } from 'react-router-dom';
 import handleA from '../handleActivity';
 import deleteA from '../deleteActivity';
->>>>>>> dev
+import { handleSubmit } from '../handleSubmit';
 
 export default function Signup({
   email,
@@ -14,7 +11,7 @@ export default function Signup({
   setPassword,
   confirmPw,
   setConfirmPw,
-  fristName,
+  firstName,
   setFirstName,
   activity,
   setActivity,
@@ -33,22 +30,66 @@ export default function Signup({
   setSelectedA,
 }) {
   const navigate = useNavigate();
-
   const availActivities = allActivities.filter(
-    (a) => !selectedA.some((entry) => entry.startsWith(a))
+    (a) => !selectedA.hasOwnProperty(a)
   );
 
   return (
-    <form className='signupInfo' onSubmit={(e) => handleSubmit()}>
+    <form
+      className='signupInfo'
+      onSubmit={(e) =>
+        handleSubmit(
+          e,
+          '/signup',
+          email,
+          password,
+          null,
+          null,
+          confirmPw,
+          firstName,
+          {
+            activity: selectedA,
+          },
+          city,
+          zipCode,
+          gender,
+          phone
+        )
+      }
+    >
       {/* top section  */}
       <label forhtml='username'>Email: </label>
-      <input id='email' type='email' />
+      <input
+        id='email'
+        type='email'
+        onChange={(e) => {
+          setEmail(e.target.value);
+        }}
+      />
       <label forhtml='password'>Password: </label>
-      <input id='password' type='password' />
+      <input
+        id='password'
+        type='password'
+        onChange={(e) => {
+          setPassword(e.target.value);
+        }}
+      />
       <label forhtml='conPassword'>Confirm Password: </label>
-      <input id='conPassword' type='password' />
+      <input
+        id='conPassword'
+        type='password'
+        onChange={(e) => {
+          setConfirmPw(e.target.value);
+        }}
+      />
       <label forhtml='firstName'>First Name: </label>
-      <input id='fisrtName' type='text' />
+      <input
+        id='fisrtName'
+        type='text'
+        onChange={(e) => {
+          setFirstName(e.target.value);
+        }}
+      />
       <br></br>
 
       {/* activity selection */}
@@ -123,10 +164,13 @@ export default function Signup({
       {/* list field */}
       <div id='listField'>
         <ul>
-          {selectedA.map((a, index) => (
-            <li key={a}>
-              {a}
-              <button onClick={() => deleteA(index, setSelectedA)}>
+          {Object.entries(selectedA).map(([activity, skillLevel]) => (
+            <li key={activity}>
+              {activity} - {skillLevel}
+              <button
+                type='button'
+                onClick={() => deleteA(activity, setSelectedA)}
+              >
                 Delete
               </button>
             </li>
@@ -134,21 +178,54 @@ export default function Signup({
         </ul>
       </div>
       <br></br>
+
+      {/* get city */}
       <label forhtml='city'>City: </label>
-      <input id='city' type='text' />
+      <input
+        id='city'
+        type='text'
+        onChange={(e) => {
+          setCity(e.target.value);
+        }}
+      />
+
+      {/* get zipcode */}
       <label forhtml='zipcode'>zip code: </label>
-      <input id='zipcode' type='text' />
+      <input
+        id='zipcode'
+        type='text'
+        onChange={(e) => {
+          setZipCode(e.target.value);
+        }}
+      />
+
+      {/* get gender */}
       <label forhtml='gender'>Gender: </label>
-      <select in='gender'>
+      <select
+        in='gender'
+        onChange={(e) => {
+          setGender(e.target.value);
+        }}
+      >
         <option></option>
         <option label='Prefer not to say'>Prefer not to say</option>
         <option label='Non-binary'>Non-binary</option>
         <option label='Male'>Male</option>
         <option label='Female'>Female</option>
       </select>
+
+      {/* get cell# */}
       <label forhtml='phone'>Phone Number: </label>
-      <input id='phone' type='text' />
+      <input
+        id='phone'
+        type='text'
+        onChange={(e) => {
+          setPhone(e.target.value);
+        }}
+      />
       <br></br>
+
+      {/* buttons */}
       <div id='bottom'>
         <Link id='login' to='/login'>
           Login

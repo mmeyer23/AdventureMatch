@@ -21,8 +21,8 @@ export default function App() {
   const [zipCode, setZipCode] = useState('');
   const [gender, setGender] = useState('');
   const [phone, setPhone] = useState('');
-  const [allActivities] = useState([, 'Golf', 'Hiking', 'Camping', 'Biking']);
-  const [selectedA, setSelectedA] = useState([]);
+  const [allActivities] = useState(['Golf', 'Hiking', 'Camping', 'Biking']);
+  const [selectedA, setSelectedA] = useState({});
   return (
     <>
       <Router>

@@ -1,7 +1,6 @@
 {
   "name": "axolotl",
   "version": "1.0.0",
-  "type": "module",
   "description": "App for finding adventure buddies",
   "main": "dist/server.js",
   "scripts": {
@@ -31,6 +30,7 @@
     "webpack-dev-server": "^5.1.0"
   },
   "dependencies": {
+    "@babel/plugin-transform-modules-commonjs": "^7.24.8",
     "@supabase/supabase-js": "^2.0.0-rc.13",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
