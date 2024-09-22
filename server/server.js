@@ -3,7 +3,7 @@ const app = express();
 const path = require('path');
 const cors = require('cors');
 const PORT = 3000;
-
+const cookieController = require('../db/controllers/cookieController.js')
 //import usersController
 const userCont = require('../db/controllers/usersController.js');
 
@@ -12,7 +12,7 @@ app.use(cors());
 app.use(express.json());
 
 //handler for post at login
-app.post('/login', userCont.verifyUser, (req, res) => {
+app.post('/login', userCont.verifyUser, cookieController.setCookie, (req, res) => {
   //if unsuccesful rederict to sign up is unsucessful
   //send status of 200 if suceessful
   console.log('received!');
@@ -20,15 +20,15 @@ app.post('/login', userCont.verifyUser, (req, res) => {
 });
 
 //test get
-app.get('/', userCont.getUsers, (req, res) => {
-  console.log('got it');
+app.get('/', userCont.getUsers, cookieController.setCookie, (req, res) => {
+  console.log('got it again');
   return res.status(200).json(res.locals.users);
 });
 
 //handle post
 
 //handle post request for sign up
-app.post('/signup', userCont.signUp, (req, res) => {
+app.post('/signup', userCont.signUp, cookieController.setCookie, (req, res) => {
   return res.status(200).json(res.locals.success);
 });
 
