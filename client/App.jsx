@@ -14,7 +14,7 @@ export default function App() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPw, setConfirmPw] = useState('');
-  const [fristName, setFirstName] = useState('');
+  const [firstName, setFirstName] = useState('');
   const [activity, setActivity] = useState('');
   const [skillLevel, setSkillLevel] = useState('');
   const [city, setCity] = useState('');
@@ -35,7 +35,7 @@ export default function App() {
                 email={email}
                 setEmail={setEmail}
                 password={password}
-                setPassWord={setPassword}
+                setPassword={setPassword}
               />
             }
           />
@@ -47,10 +47,10 @@ export default function App() {
                 email={email}
                 setEmail={setEmail}
                 password={password}
-                setPassWord={setPassword}
+                setPassword={setPassword}
                 confirmPw={confirmPw}
                 setConfirmPw={setConfirmPw}
-                fristName={fristName}
+                firstName={firstName}
                 setFirstName={setFirstName}
                 activity={activity}
                 setActivity={setActivity}
@@ -70,7 +70,28 @@ export default function App() {
               />
             }
           />
-          {/* <Main /> */}
+          <Route
+            path='/main'
+            element={
+              <Main
+                activity={activity}
+                setActivity={setActivity}
+                skillLevel={skillLevel}
+                setSkillLevel={setSkillLevel}
+                city={city}
+                setCity={setCity}
+                zipCode={zipCode}
+                setZipCode={setZipCode}
+                gender={gender}
+                setGender={setGender}
+                phone={phone}
+                setPhone={setPhone}
+                allActivities={allActivities}
+                selectedA={selectedA}
+                setSelectedA={setSelectedA}
+              />
+            }
+          />
         </Routes>
       </Router>
     </>

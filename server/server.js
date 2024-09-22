@@ -1,10 +1,18 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const PORT = 8080;
+const cors = require('cors');
+const PORT = 3000;
 
 // parses JSON from incoming request
+app.use(cors());
 app.use(express.json());
+
+//handle post requirest
+app.post('/signup', (req, res) => {
+  console.log(req.body);
+  res.status(200).json({ message: 'signup info received' });
+});
 
 // Global error handling middleware
 app.use((err, req, res, next) => {
