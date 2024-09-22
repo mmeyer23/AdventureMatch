@@ -10,7 +10,7 @@ export default function Login({ email, setEmail, password, setPassword }) {
         handleSubmit(e, '/login', email, password, navigate, isLoggedIn)
       }
     >
-      <label forhtml='username'>Email: </label>
+      <label htmlFor='email'>Email: </label>
       <input
         id='email'
         type='email'
@@ -19,7 +19,7 @@ export default function Login({ email, setEmail, password, setPassword }) {
           setEmail(e.target.value);
         }}
       />
-      <label forhtml='password'>Password: </label>
+      <label htmlFor='password'>Password: </label>
       <input
         id='password'
         type='password'
