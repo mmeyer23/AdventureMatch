@@ -45,8 +45,8 @@ export default function Signup({
           password,
           null,
           null,
-          confirmPw,
           firstName,
+          confirmPw,
           {
             activity: selectedA,
           },
@@ -62,6 +62,7 @@ export default function Signup({
       <input
         id='email'
         type='email'
+        required
         onChange={(e) => {
           setEmail(e.target.value);
         }}
@@ -70,6 +71,7 @@ export default function Signup({
       <input
         id='password'
         type='password'
+        required
         onChange={(e) => {
           setPassword(e.target.value);
         }}
@@ -78,6 +80,7 @@ export default function Signup({
       <input
         id='conPassword'
         type='password'
+        required
         onChange={(e) => {
           setConfirmPw(e.target.value);
         }}
@@ -86,6 +89,7 @@ export default function Signup({
       <input
         id='fisrtName'
         type='text'
+        required
         onChange={(e) => {
           setFirstName(e.target.value);
         }}
@@ -184,16 +188,18 @@ export default function Signup({
       <input
         id='city'
         type='text'
+        required
         onChange={(e) => {
           setCity(e.target.value);
         }}
       />
 
       {/* get zipcode */}
-      <label forhtml='zipcode'>zip code: </label>
+      <label forhtml='zipcode'>Zip Code: </label>
       <input
         id='zipcode'
         type='text'
+        required
         onChange={(e) => {
           setZipCode(e.target.value);
         }}
@@ -203,6 +209,7 @@ export default function Signup({
       <label forhtml='gender'>Gender: </label>
       <select
         in='gender'
+        required
         onChange={(e) => {
           setGender(e.target.value);
         }}
@@ -219,6 +226,7 @@ export default function Signup({
       <input
         id='phone'
         type='text'
+        required
         onChange={(e) => {
           setPhone(e.target.value);
         }}

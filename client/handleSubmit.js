@@ -5,18 +5,17 @@ export const handleSubmit = async (
   endpoint,
   email,
   password,
-  confirmPw,
+  navigate,
+  loginState,
   firstName,
+  confirmPw,
   { activity },
   city,
   zipCode,
   gender,
-  phone,
-  navigate,
-  loginState
+  phone
 ) => {
   e.preventDefault();
-  console.log(activity);
 
   if (endpoint === '/signup' && password !== confirmPw) {
     alert('Password does not match!');
@@ -27,7 +26,7 @@ export const handleSubmit = async (
     const response = await fetch(`http://localhost:3000${endpoint}`, {
       method: 'POST',
       headers: {
-        'Content-type': 'applicatioin/json',
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         email,

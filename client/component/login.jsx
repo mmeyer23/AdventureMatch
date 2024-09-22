@@ -2,27 +2,19 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { handleSubmit } from '../handleSubmit';
 
-export default function Login(email, setEmail, password, setPassword) {
+export default function Login({ email, setEmail, password, setPassword }) {
   return (
     <form
       className='loginInfo'
       onSubmit={(e) =>
-        handleSubmit(
-          e,
-          '/login',
-          email,
-          password,
-          null,
-          null,
-          navigate,
-          isLoggedIn
-        )
+        handleSubmit(e, '/login', email, password, navigate, isLoggedIn)
       }
     >
       <label forhtml='username'>Email: </label>
       <input
         id='email'
         type='email'
+        required
         onChange={(e) => {
           setEmail(e.target.value);
         }}
@@ -31,6 +23,7 @@ export default function Login(email, setEmail, password, setPassword) {
       <input
         id='password'
         type='password'
+        required
         onChange={(e) => {
           setPassword(e.target.value);
         }}
