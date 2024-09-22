@@ -14,6 +14,11 @@ app.post('/signup', (req, res) => {
   res.status(200).json({ message: 'signup info received' });
 });
 
+app.post('/login', (req, res) => {
+  console.log(req.body);
+  res.status(200).json({ message: 'signup info received' });
+});
+
 // Global error handling middleware
 app.use((err, req, res, next) => {
   const defaultErr = {
