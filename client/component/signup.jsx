@@ -58,7 +58,7 @@ export default function Signup({
       }
     >
       {/* top section  */}
-      <label forhtml='username'>Email: </label>
+      <label htmlFor='username'>Email: </label>
       <input
         id='email'
         type='email'
@@ -67,7 +67,7 @@ export default function Signup({
           setEmail(e.target.value);
         }}
       />
-      <label forhtml='password'>Password: </label>
+      <label htmlFor='password'>Password: </label>
       <input
         id='password'
         type='password'
@@ -76,7 +76,7 @@ export default function Signup({
           setPassword(e.target.value);
         }}
       />
-      <label forhtml='conPassword'>Confirm Password: </label>
+      <label htmlFor='conPassword'>Confirm Password: </label>
       <input
         id='conPassword'
         type='password'
@@ -85,7 +85,7 @@ export default function Signup({
           setConfirmPw(e.target.value);
         }}
       />
-      <label forhtml='firstName'>First Name: </label>
+      <label htmlFor='firstName'>First Name: </label>
       <input
         id='fisrtName'
         type='text'
@@ -97,7 +97,7 @@ export default function Signup({
       <br></br>
 
       {/* activity selection */}
-      <label forhtml='activity'>Choose an activity: </label>
+      <label htmlFor='activity'>Choose an activity: </label>
       <select
         id='activity'
         value={activity}
@@ -167,7 +167,7 @@ export default function Signup({
 
       {/* list field */}
       <div id='listField'>
-        <ul>
+        <ul id='list'>
           {Object.entries(selectedA).map(([activity, skillLevel]) => (
             <li key={activity}>
               {activity} - {skillLevel}
@@ -184,7 +184,7 @@ export default function Signup({
       <br></br>
 
       {/* get city */}
-      <label forhtml='city'>City: </label>
+      <label htmlFor='city'>City: </label>
       <input
         id='city'
         type='text'
@@ -195,7 +195,7 @@ export default function Signup({
       />
 
       {/* get zipcode */}
-      <label forhtml='zipcode'>Zip Code: </label>
+      <label htmlFor='zipcode'>Zip Code: </label>
       <input
         id='zipcode'
         type='text'
@@ -206,7 +206,7 @@ export default function Signup({
       />
 
       {/* get gender */}
-      <label forhtml='gender'>Gender: </label>
+      <label htmlFor='gender'>Gender: </label>
       <select
         in='gender'
         required
@@ -222,7 +222,7 @@ export default function Signup({
       </select>
 
       {/* get cell# */}
-      <label forhtml='phone'>Phone Number: </label>
+      <label htmlFor='phone'>Phone Number: </label>
       <input
         id='phone'
         type='text'

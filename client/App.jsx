@@ -39,7 +39,17 @@ export default function App() {
               />
             }
           />
-          <Route path='/' element={<Login />} />
+          <Route
+            path='/'
+            element={
+              <Login
+                email={email}
+                setEmail={setEmail}
+                password={password}
+                setPassword={setPassword}
+              />
+            }
+          />
           <Route
             path='/signup'
             element={
