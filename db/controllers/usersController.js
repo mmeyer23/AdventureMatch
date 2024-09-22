@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const usersController = {};
 
 usersController.signUp = async (req, res, next) => {
-  const { email, password, firstname, activity, city, zipCode, gender, phone } =
+  const { email, password, firstName, activity, city, zipCode, gender, phone } =
     req.body;
   if (!email || !password) {
     throw new Error('Email and Password required!');
@@ -21,12 +21,16 @@ usersController.signUp = async (req, res, next) => {
     }
     const result = await db.query(
       'INSERT INTO users (firstname, email, password, city, zipcode, gender, phone) VALUES ($1, $2, $3, $4, $5, $6, $7)',
-      [firstname, email, hashedPassword, city, zipCode, gender, phone]
+      [firstName, email, hashedPassword, city, zipCode, gender, phone]
     );
-    const userId = await db.query(
+
+    const userResult = await db.query(
       'SELECT user_id FROM users WHERE email = $1',
       [email]
     );
+    const userId = userResult.rows[0].user_id;
+
+    console.log(activity);
 
     for (const [activityName, skillLevel] of Object.entries(activity)) {
       await db.query(
@@ -49,9 +53,9 @@ usersController.verifyUser = async (req, res, next) => {
   const saltRounds = 10;
   const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-  const SQLQuery = 'SELECT email, password FROM users WHERE email = $1';
+  const SQLQuery = 'SELECT password FROM users WHERE email = $1';
   db.query(SQLQuery, [email])
-    .then((response) => response.json()) //may not need to convert from json
+    // .then((response) => response.json()) //may not need to convert from json
     .then((data) => {
       if (data.password === hashedPassword) {
         return next();

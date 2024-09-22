@@ -29,7 +29,7 @@ app.get('/', userCont.getUsers, (req, res) => {
 
 //handle post request for sign up
 app.post('/signup', userCont.signUp, (req, res) => {
-  return res.sendStatus(200);
+  return res.status(200).json(res.locals.success);
 });
 
 //handles a post request form main that sends a ticket to the data base
