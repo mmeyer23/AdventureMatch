@@ -13,7 +13,8 @@ export const handleSubmit = async (
   city,
   zipCode,
   gender,
-  phone
+  phone,
+  setZipcodes
 ) => {
   e.preventDefault();
 
@@ -44,6 +45,7 @@ export const handleSubmit = async (
       throw new Error('connection to server failed');
     }
 
+    // console.log(req.body);
     const data = await response.json();
 
     if (endpoint === '/signup') {

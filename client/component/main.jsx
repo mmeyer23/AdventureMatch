@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import handleA from '../handleActivity';
 import deleteA from '../deleteActivity';
+import { handleSubmit } from '../handleSubmit';
 
 export default function Main({
   activity,
@@ -19,6 +20,8 @@ export default function Main({
   allActivities,
   selectedA,
   setSelectedA,
+  zipcodes,
+  setZipcodes,
 }) {
   const navigate = useNavigate();
   const availActivities = allActivities.filter(
@@ -26,90 +29,150 @@ export default function Main({
   );
 
   useEffect(() => {
+    const zipcodes = ['90042', '90036', '90028', '91205'];
+    let map; // Declare map here
+
     const initMap = () => {
-      const zipcodes = ['90042', '90036', '90028', '91205'];
-      const geocoder = new window.google.maps.Geocoder();
-      const options = {
+      //error handling, checking if google map script has been loaded
+      if (
+        typeof window.google === 'undefined' ||
+        typeof window.google.maps === 'undefined'
+      ) {
+        console.error('Google Maps API not loaded');
+        return;
+      }
+
+      // Initialize map with default center
+      map = new window.google.maps.Map(document.getElementById('map'), {
         zoom: 12,
-        center: zipcodes[0],
-      };
-      //new map
-      const map = new window.google.maps.Map(
-        document.getElementById('map'),
-        options
-      );
-
-      //adding marker
-      const addMarker = (location) => {
-        new window.google.maps.Marker({
-          position: location,
-          map: map,
-        });
-      };
-
-      //geocode each zipcode and add marker
-      const promises = zipcodes.map((zipcode) => {
-        return new Promise((resolve, reject) => {
-          geocoder.geocode({ 'address': zipcode }, (results, status) => {
-            if (status === 'OK') {
-              const location = results[0].geometry.location;
-              addMarker(location);
-              //resolve() is called when geocoding operation is completed. this indicates that the
-              //promise is fullfilled and pass location to whichever is next
-              resolve(location);
-            } else {
-              console.log(
-                `Geocode was not successful for ${zipcode}: ${status}`
-              );
-              reject(status);
-            }
-          });
-        });
+        center: { lat: 34.0549, lng: -118.2426 },
       });
 
-      //this is to set center to be first zipcode, after all geocoding is done
-      Promise.all(promises)
-        .then((locations) => {
-          // Set the center to the first location
-          if (locations.length > 0) {
-            map.setCenter(locations[0]);
-          }
-        })
-        .catch((error) => {
-          console.error('Error geocoding: ', error);
+      //this is creating an instance of the Google Geocoder class from the
+      //Google Map Javascipt API
+      const geocoder = new window.google.maps.Geocoder();
+
+      //adding marker
+      //addMarker is invoked in the forEach, thus it has access to location variable
+      const addMarker = (location, zipcode) => {
+        //this is creating an instance of the Google Geocoder class from the
+        //Goggle Map Javascript API, passing in an object that contains the
+        //configeraion option for the marker
+        const marker = new window.google.maps.Marker({
+          //location is the lat and lng information
+          position: location,
+          //specify which map to add the marker in
+          map: map,
         });
+
+        //this is creating an instance of the Goggle infoWindow class from the
+        //Google Map Javascipt API, passing in an object that contains the
+        //configuration option for the info window
+        const infoWindow = new window.google.maps.InfoWindow({
+          //this content is whats being displayed in the info window
+          content: `Zip Code: ${zipcode}`,
+        });
+
+        //adding an event listener, listen for click, to the marker object
+        marker.addListener('click', () => {
+          //this calls the open method of the infoWindow instance,
+          //passing in map: which map this window should be displayed on
+          //           marker: specify the anchor point of the info window
+          infoWindow.open(map, marker);
+        });
+      };
+
+      //this function is adding a marker for each zipcode in the zipcodes array
+      zipcodes.forEach((zipcode) => {
+        //results is an array returned by the Google Map API
+        //using the geocode method of the geocode class to convert a givien address into geographic coordinates
+        //{address: zipcode} specifies the address thats being convert to a location
+        //this function then gets a array results and status back from the API
+        geocoder.geocode({ address: zipcode }, (results, status) => {
+          //checking if the result is ok and there is a result at 0 index
+          if (status === 'OK' && results[0]) {
+            //this retrieve the geographic location (lat, lng) of the first result
+            //saving it to location variable
+            const location = results[0].geometry.location;
+            //now addMarker is invoked passing in location(lat/lng) and the zipcode
+            addMarker(location, zipcode);
+          } else {
+            console.log(`Geocode was not successful for ${zipcode}: ${status}`);
+          }
+        });
+      });
     };
 
-    //loading Google API
+    // dynamiccally loading Google API
     const loadMapScript = () => {
+      //creating a script element used to load Google Map API
       const script = document.createElement('script');
+      //setting the source of the scipt element to the API
+      //***callback=initMap specify the initMap functioin should be called once the script is loaded ****/
       script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyCPg7FdcYJsEj83PpiOaX6Kz385Wrz-KHw&callback=initMap`;
-
+      //script will be excuted async, so no blocking of the rest of the page
       script.async = true;
-      //scirpt should be executed after the document has been completely parsed
+      //script should be executed only after the HTML document has been completed parsed
       script.defer = true;
-      //attaching initMap to global window object. so Google Map API can find and execute after it reloads
+
+      // Attach initMap to window, making the initMap accessible globally
       window.initMap = initMap;
+
+      //event listener that will run once script is fully loaded
+      script.onload = () => {
+        console.log('Google Maps script loaded successfully.');
+        //initicalize the map, ensuring it only happens after the API is fully loaded
+        initMap(); // Call initMap here to ensure it's called after the script is loaded
+      };
+      //adding the script to the HTML document
       document.body.appendChild(script);
     };
 
     loadMapScript();
 
-    //clear maps when component unmount
+    // Clear maps when component unmount
     return () => {
+      //this will select the any script that contains 'maps.googleapi.com',
+      //regardless what their endpoint is
       const script = document.querySelector(
+        //*= means 'contains'
         `script[src*="maps.googleapis.com"]`
       );
+      //if there is such script, remove the script from the HTML document
       if (script) {
         document.body.removeChild(script);
       }
+      //this removes initMap from the window object
+      //making sure there is no reference globally when the component is mounted again
       delete window.initMap;
     };
   }, []);
 
   return (
     <>
-      <form className='searchMain'>
+      <form
+        className='searchMain'
+        onSubmit={(e) => {
+          handleSubmit(
+            e,
+            '/main',
+            null, //email
+            null, //password
+            null, //navigate
+            null, //loginState
+            null, //firstName
+            null, //confirmPw
+            {
+              activity: selectedA,
+            },
+            city,
+            zipCode,
+            gender,
+            null, //phone
+            setZipcodes
+          );
+        }}
+      >
         <label forhtml='searchActivity'>Choose an activity: </label>
         <select
           id='searchActivity'
@@ -234,7 +297,7 @@ export default function Main({
           <option label='Male'>Male</option>
           <option label='Female'>Female</option>
         </select>
-        <button>Search</button>
+        <button type='submit'>Search</button>
       </form>
 
       <div id='map'></div>

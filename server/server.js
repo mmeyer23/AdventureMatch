@@ -3,7 +3,7 @@ const app = express();
 const path = require('path');
 const cors = require('cors');
 const PORT = 3000;
-const cookieController = require('../db/controllers/cookieController.js')
+const cookieController = require('../db/controllers/cookieController.js');
 //import usersController
 const userCont = require('../db/controllers/usersController.js');
 
@@ -13,10 +13,15 @@ app.use(express.json());
 
 //handler for post at login
 //AS: added middleware for creating cookie upon login - haven't tested yet
-app.post('/login', userCont.verifyUser, cookieController.setCookie, (req, res) => {
-  console.log('received!');
-  return res.redirect('/main');
-});
+app.post(
+  '/login',
+  userCont.verifyUser,
+  cookieController.setCookie,
+  (req, res) => {
+    console.log('received!');
+    return res.redirect('/main');
+  }
+);
 
 //test get
 //AS: this set cookie middleware is currently working for this get request
@@ -31,6 +36,10 @@ app.get('/', userCont.getUsers, cookieController.setCookie, (req, res) => {
 //AS: not sure if we acutally need to create a cookie when they sign up.. probably just when they sign in?
 app.post('/signup', userCont.signUp, cookieController.setCookie, (req, res) => {
   return res.status(200).json(res.locals.success);
+});
+
+app.post('/main', (req, res) => {
+  res.status(200).json({ message: 'search criteria has been recevied' });
 });
 
 //handles a post request form main that sends a ticket to the data base
