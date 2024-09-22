@@ -15,6 +15,7 @@ app.use(express.json());
 //AS: added middleware for creating cookie upon login - haven't tested yet
 app.post('/login', userCont.verifyUser, cookieController.setCookie, (req, res) => {
   console.log('logged in!');
+  //AS: sending string back to front if user is verified
   return res.status(200).json({string: "password matched for this user"});
 });
 

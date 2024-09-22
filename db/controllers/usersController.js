@@ -93,7 +93,7 @@ usersController.verifyUser = async (req, res, next) => {
 //       })
 //     );
 // };
-
+//finds user by email address
 usersController.getUsers = (req, res, next) => {
   const {email} = req.body;
   const SQLQuery = 'SELECT * FROM users WHERE email = $1';
@@ -113,7 +113,7 @@ usersController.getUsers = (req, res, next) => {
     })
     .catch((err) => next(err));
 };
-
+//AS: deletes a user based on email address
 usersController.deleteUser = (req, res, next) => {
   const {email} = req.body;
   const SQLQuery = 'DELETE FROM users WHERE email = $1'
