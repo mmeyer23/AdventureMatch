@@ -101,12 +101,31 @@ usersController.getUsers = (req, res, next) => {
   db.query(SQLQuery, [email])
     .then((data) => {
       console.log(data.rows);
+      if(!data.rows[0]){
+       return next({
+          log: 'user not found in getUsersFunction',
+          status: 404,
+          message: 'user not found'
+        })
+      }
       res.locals.data = data.rows;
       return next();
     })
     .catch((err) => next(err));
 };
 
+usersController.deleteUser = (req, res, next) => {
+  const {email} = req.body;
+  const SQLQuery = 'DELETE FROM users WHERE email = $1'
+  db.query(SQLQuery, [email])
+  .then((data) => {
+    console.log('deleted:', data.rows)
+    res.locals.deleted = data.rows
+    return next()
+  })
+  .catch(err => next(err)
+  )
+}
 
 
 module.exports = usersController;
