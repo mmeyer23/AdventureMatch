@@ -7,7 +7,7 @@ cookieController.setCookie = (req, res, next) => {
     console.log('cookie created!')
     return next()
 }
-
+//can't set this until they successfully log in and we can access their id
 cookieController.setSSID = (req, res, next) => {
   
 }

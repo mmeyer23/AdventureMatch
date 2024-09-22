@@ -12,14 +12,14 @@ app.use(cors());
 app.use(express.json());
 
 //handler for post at login
+//AS: added middleware for creating cookie upon login - haven't tested yet
 app.post('/login', userCont.verifyUser, cookieController.setCookie, (req, res) => {
-  //if unsuccesful rederict to sign up is unsucessful
-  //send status of 200 if suceessful
   console.log('received!');
   return res.redirect('/main');
 });
 
 //test get
+//AS: this set cookie middleware is currently working for this get request
 app.get('/', userCont.getUsers, cookieController.setCookie, (req, res) => {
   console.log('got it again');
   return res.status(200).json(res.locals.users);
@@ -28,6 +28,7 @@ app.get('/', userCont.getUsers, cookieController.setCookie, (req, res) => {
 //handle post
 
 //handle post request for sign up
+//AS: not sure if we acutally need to create a cookie when they sign up.. probably just when they sign in?
 app.post('/signup', userCont.signUp, cookieController.setCookie, (req, res) => {
   return res.status(200).json(res.locals.success);
 });
