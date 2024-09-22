@@ -77,9 +77,43 @@ usersController.verifyUser = async (req, res, next) => {
     );
 };
 
+// usersController.getUsers = (req, res, next) => {
+//   const SQLQuery = 'SELECT * FROM users';
+//   db.query(SQLQuery)
+//     .then((data) => {
+//       console.log(data.rows);
+//       res.locals.data = data.rows;
+//       return next();
+//     })
+//     .catch((err) => next(err));
+// };
+
+//logic for delete user 
+//AS: still needs root handler
+usersController.deleteUser = (req,res,next) => {
+  //not sure if username is what will get passed from front end 
+  const { email } = req.body.email;
+  console.log(email)
+  const SQLQuery = 'DELETE FROM users WHERE email = $1';
+  db.query(SQLQuery, [email])
+  .then(data => {
+    console.log('deleted:', data)
+    res.locals.deleted = data
+    return next();
+  })
+  .catch(
+    next({
+    log: 'Error occured in usersController.verifyUser middlewear',
+    status: 401,
+    message: { err: 'error in email/pw verification' },
+  }))
+}
+
 usersController.getUsers = (req, res, next) => {
-  const SQLQuery = 'SELECT * FROM users';
-  db.query(SQLQuery)
+  const {email} = req.body;
+  const SQLQuery = 'SELECT * FROM users WHERE email = $1';
+  console.log('trying to get user')
+  db.query(SQLQuery, [email])
     .then((data) => {
       console.log(data.rows);
       res.locals.data = data.rows;
@@ -87,5 +121,7 @@ usersController.getUsers = (req, res, next) => {
     })
     .catch((err) => next(err));
 };
+
+
 
 module.exports = usersController;
