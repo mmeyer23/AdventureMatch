@@ -1,11 +1,7 @@
 import React from 'react';
-<<<<<<< HEAD
-import { Link } from 'react-router-dom';
-=======
 import { Link, useNavigate } from 'react-router-dom';
 import handleA from '../handleActivity';
 import deleteA from '../deleteActivity';
->>>>>>> dev
 
 export default function Signup({
   email,

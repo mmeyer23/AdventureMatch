@@ -1,16 +1,15 @@
 {
   "name": "axolotl",
   "version": "1.0.0",
-  "type": "module",
   "description": "App for finding adventure buddies",
-  "main": "dist/server.js",
+  "main": "server/server.js",
   "scripts": {
     "build": "webpack",
     "test": "webpack-dev-server",
-    "start": "node dist/server.js",
+    "start": "node server/server.js",
     "watch:build": "webpack -w",
-    "watch:server": "nodemon dist/server.js",
-    "dev": "npm-run-all --parallel watch:*"
+    "watch:server": "nodemon server/server.js",
+    "dev": "concurrently \"webpack serve --mode development\" \"node server/server.js\""
   },
   "author": "",
   "license": "ISC",
@@ -31,10 +30,15 @@
     "webpack-dev-server": "^5.1.0"
   },
   "dependencies": {
+    "@babel/plugin-transform-modules-commonjs": "^7.24.8",
     "@supabase/supabase-js": "^2.0.0-rc.13",
+    "bcrypt": "^5.1.1",
+    "concurrently": "^9.0.1",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
     "path": "^0.12.7",
+    "pg": "^8.13.0",
     "postgres": "^3.4.4",
     "react": "^18.3.1",
     "react-router-dom": "^6.26.2"
