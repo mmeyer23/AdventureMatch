@@ -50,32 +50,49 @@ usersController.verifyUser = async (req, res, next) => {
   console.log('verifying');
   const { email, password } = req.body;
 
-  const saltRounds = 10;
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-  const SQLQuery = 'SELECT password FROM users WHERE email = $1';
-  db.query(SQLQuery, [email])
-    // .then((response) => response.json()) //may not need to convert from json
-    .then((data) => {
-      if (data.password === hashedPassword) {
-        return next();
-      } else {
-        const defaultErr = {
-          log: 'Error occured in usersController.verifyUser middlewear',
-          status: 401,
-          message: { err: 'Incorrect email or password' },
-        };
-        return next(defaultErr);
-      }
-    })
-    .catch(
-      next({
-        log: 'Error occured in usersController.verifyUser middlewear',
-        status: 401,
-        message: { err: 'error in email/pw verification' },
-      })
+  try {
+    const savedPasswordLookup = await db.query(
+      'SELECT password FROM users WHERE email=$1',
+      [email]
     );
+
+    if (savedPasswordLookup.rows.length === 0) {
+      return next({ err: 'User not found' });
+    }
+
+    const savedPassword = savedPasswordLookup.rows[0].password;
+
+    const passwordMatch = await bcrypt.compare(password, savedPassword);
+    if (!passwordMatch) return next({ err: 'Password does not match' });
+    return next();
+  } catch (err) {
+    return next({ error: `${err} in verifyUser middleware` });
+  }
 };
+
+//   const SQLQuery = 'SELECT password FROM users WHERE email = $1';
+//   db.query(SQLQuery, [email])
+//     // .then((response) => response.json()) //may not need to convert from json
+//     .then((data) => {
+//       if (data.password === hashedPassword) {
+//         return next();
+//       } else {
+//         const defaultErr = {
+//           log: 'Error occured in usersController.verifyUser middleware',
+//           status: 401,
+//           message: { err: 'Incorrect email or password' },
+//         };
+//         return next(defaultErr);
+//       }
+//     })
+//     .catch(
+//       next({
+//         log: 'Error occured in usersController.verifyUser middlewear',
+//         status: 401,
+//         message: { err: 'error in email/pw verification' },
+//       })
+//     );
+// };
 
 usersController.getUsers = (req, res, next) => {
   const SQLQuery = 'SELECT * FROM users';
