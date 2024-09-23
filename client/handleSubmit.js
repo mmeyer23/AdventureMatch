@@ -15,8 +15,8 @@ const handleSubmit = async (
   gender,
   phone,
   setZipcodes,
-  distance,
-  setDistance,
+  // distance,
+  // setDistance,
   setEmail,
   setPassword,
   setConfirmPw,
@@ -66,6 +66,8 @@ const handleSubmit = async (
       // }
 
       if (endpoint === '/signup') {
+        console.log('this is setPhone in /signup', setPhone);
+
         setEmail('');
         setPassword('');
         setConfirmPw('');
@@ -123,8 +125,9 @@ const handleSubmit = async (
 
       if (endpoint === '/main') {
         // console.log('HERE IS OUR DATA:' + data[0].zipcode);
-        const zipcodeArray = data.map((obj) => obj.zipcode);
-        console.log(zipcodeArray);
+        const zipcodeArray = data.map((obj) => obj.zipcode.toString());
+        // console.log(zipcodeArray);
+        setZipcodes(zipcodeArray);
       }
     } catch (error) {
       console.log('Error at handleSubmit', error);

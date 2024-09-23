@@ -26,7 +26,7 @@ export default function App() {
   const [selectedA, setSelectedA] = useState({});
   const [zipcodes, setZipcodes] = useState([]);
   const [isLogin, setIsLogin] = useState(false);
-  const [miles, setMiles] = useState(0);
+  // const [miles, setMiles] = useState(0);
 
   const loginState = () => {
     setIsLogin(true);
@@ -142,8 +142,8 @@ export default function App() {
                   setSelectedA={setSelectedA}
                   zipcodes={zipcodes}
                   setZipcodes={setZipcodes}
-                  miles={miles}
-                  setMiles={setMiles}
+                  // miles={miles}
+                  // setMiles={setMiles}
                 />
               ) : (
                 <Navigate to='/login' />
