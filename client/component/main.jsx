@@ -4,6 +4,7 @@ import handleA from '../handleActivity';
 import deleteA from '../deleteActivity';
 import handleSubmit from '../handleSubmit';
 import resetEntryMain from '../resetEntryMain';
+// import convertMiles from '../convertMiles';
 
 export default function Main({
   activity,
@@ -23,11 +24,20 @@ export default function Main({
   setSelectedA,
   zipcodes,
   setZipcodes,
+  // miles,
+  // setMiles,
 }) {
   const navigate = useNavigate();
   const availActivities = allActivities.filter(
     (a) => !selectedA.hasOwnProperty(a)
   );
+
+  // const handleConversion = (e) => {
+  //   const selectValue = e.target.value;
+  //   setDistance(selectValue);
+  //   const inMeter = convertMiles(selectValue);
+  //   setMiles(inMeter);
+  // };
 
   useEffect(() => {
     // const zipcodes = ['90042', '90036', '90028', '91205'];
@@ -313,20 +323,20 @@ export default function Main({
             setZipCode(e.target.value);
           }}
         />
-        <label forhtml='className'>Distance: </label>
+        {/* <label forhtml='className'>Distance: </label>
         <select
           className='allInput'
           id='distance'
           value={distance}
           onChange={(e) => {
-            setDistance(e.target.value);
+            handleConversion;
           }}
         >
           <option value=''></option>
           <option value='10'>10 miles</option>
           <option value='25'>25 miles</option>
           <option value='50'>50 mils</option>
-        </select>
+        </select> */}
 
         {/* get gender */}
         <label forhtml='gender'>Gender: </label>
