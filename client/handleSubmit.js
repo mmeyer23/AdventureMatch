@@ -71,20 +71,20 @@ const handleSubmit = async (
       setSelectedA({});
 
       navigate('/login');
-    }
+    } else if (endpoint === '/login') {
+      //logic to auth the password
 
-    //logic to auth the password
+      if (data.string === 'password matched for this user') {
+        loginState();
+        navigate('/main');
 
-    if (data.string === 'password matched for this user') {
-      loginState();
-      navigate('/main');
-
-      setEmail('');
-      setPassword('');
-    } else {
-      alert(
-        'The password you entered does not match our record for this email address'
-      );
+        setEmail('');
+        setPassword('');
+      } else {
+        alert(
+          'The password you entered does not match our record for this email address'
+        );
+      }
     }
   } catch (error) {
     console.log('Error at handleSubmit', error);
