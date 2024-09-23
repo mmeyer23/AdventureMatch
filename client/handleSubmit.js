@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-export const handleSubmit = async (
+const handleSubmit = async (
   e,
   endpoint,
   email,
@@ -13,7 +13,19 @@ export const handleSubmit = async (
   city,
   zipCode,
   gender,
-  phone
+  phone,
+  setZipcodes,
+  setEmail,
+  setPassword,
+  setConfirmPw,
+  setFirstName,
+  setActivity,
+  setSkillLevel,
+  setCity,
+  setZipCode,
+  setGender,
+  setPhone,
+  setSelectedA
 ) => {
   e.preventDefault();
 
@@ -47,7 +59,19 @@ export const handleSubmit = async (
     const data = await response.json();
 
     if (endpoint === '/signup') {
-      window.location.href = '/login';
+      setEmail('');
+      setPassword('');
+      setConfirmPw('');
+      setFirstName('');
+      setActivity('');
+      setSkillLevel('');
+      setCity('');
+      setZipCode('');
+      setGender('');
+      setPhone('');
+      setSelectedA({});
+
+      navigate('/login');
     }
 
     //logic to auth the password
@@ -56,3 +80,5 @@ export const handleSubmit = async (
     alert(error.message);
   }
 };
+
+export default handleSubmit;

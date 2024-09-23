@@ -23,6 +23,7 @@ export default function App() {
   const [phone, setPhone] = useState('');
   const [allActivities] = useState(['Golf', 'Hiking', 'Camping', 'Biking']);
   const [selectedA, setSelectedA] = useState({});
+  const [zipcodes, setZipcodes] = useState([]);
   return (
     <>
       <Router>
@@ -84,6 +85,14 @@ export default function App() {
             path='/main'
             element={
               <Main
+                email={email}
+                setEmail={setEmail}
+                password={password}
+                setPassword={setPassword}
+                confirmPw={confirmPw}
+                setConfirmPw={setConfirmPw}
+                firstName={firstName}
+                setFirstName={setFirstName}
                 activity={activity}
                 setActivity={setActivity}
                 skillLevel={skillLevel}
@@ -99,6 +108,8 @@ export default function App() {
                 allActivities={allActivities}
                 selectedA={selectedA}
                 setSelectedA={setSelectedA}
+                zipcodes={zipcodes}
+                setZipcodes={setZipcodes}
               />
             }
           />

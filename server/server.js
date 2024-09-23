@@ -3,7 +3,7 @@ const app = express();
 const path = require('path');
 const cors = require('cors');
 const PORT = 3000;
-const cookieController = require('../db/controllers/cookieController.js')
+const cookieController = require('../db/controllers/cookieController.js');
 //import usersController
 const userCont = require('../db/controllers/usersController.js');
 
@@ -34,6 +34,10 @@ app.get('/', userCont.getUsers, cookieController.setCookie, (req, res) => {
 app.post('/signup', userCont.signUp, cookieController.setCookie, (req, res) => {
   console.log('signed up!')
   return res.status(200).json(res.locals.success);
+});
+
+app.post('/main', (req, res) => {
+  res.status(200).json({ message: 'search criteria has been recevied' });
 });
 
 //handles a post request form main that sends a ticket to the data base
