@@ -1,16 +1,67 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { handleSubmit } from '../handleSubmit';
+import { Link, useNavigate } from 'react-router-dom';
+import handleSubmit from '../handleSubmit';
 
-export default function Login({ email, setEmail, password, setPassword }) {
+export default function Login({
+  email,
+  setEmail,
+  password,
+  setPassword,
+  loginState,
+  confirmPw,
+  setConfirmPw,
+  setFirstName,
+  setActivity,
+  setSkillLevel,
+  city,
+  setCity,
+  zipCode,
+  setZipCode,
+  gender,
+  setGender,
+  phone,
+  setPhone,
+  selectedA,
+  setSelectedA,
+  setZipcodes,
+}) {
+  const navigate = useNavigate();
   return (
     <>
       <header id='header'></header>
       <form
         className='loginInfo'
-        onSubmit={(e) =>
-          handleSubmit(e, '/login', email, password, navigate, isLoggedIn)
-        }
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit(
+            e,
+            '/login',
+            email,
+            password,
+            navigate,
+            loginState,
+            confirmPw,
+            {
+              activity: selectedA,
+            },
+            city,
+            zipCode,
+            gender,
+            phone,
+            setZipcodes,
+            setEmail,
+            setPassword,
+            setConfirmPw,
+            setFirstName,
+            setActivity,
+            setSkillLevel,
+            setCity,
+            setZipCode,
+            setGender,
+            setPhone,
+            setSelectedA
+          );
+        }}
       >
         <label htmlFor='email'>Email: </label>
         <input

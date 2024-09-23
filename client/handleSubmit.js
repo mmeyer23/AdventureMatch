@@ -9,7 +9,7 @@ const handleSubmit = async (
   loginState,
   firstName,
   confirmPw,
-  { activity },
+  { activity = null } = {},
   city,
   zipCode,
   gender,
@@ -28,7 +28,6 @@ const handleSubmit = async (
   setSelectedA
 ) => {
   e.preventDefault();
-
   if (endpoint === '/signup' && password !== confirmPw) {
     alert('Password does not match!');
     return;
@@ -80,6 +79,18 @@ const handleSubmit = async (
     }
 
     //logic to auth the password
+
+    if (data.string === 'password matched for this user') {
+      loginState();
+      navigate('/main');
+
+      setEmail('');
+      setPassword('');
+    } else {
+      alert(
+        'The password you entered does not match our record for this email address'
+      );
+    }
   } catch (error) {
     console.log('Error at handleSubmit', error);
     alert(error.message);
