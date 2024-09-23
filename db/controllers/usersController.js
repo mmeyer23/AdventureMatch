@@ -176,7 +176,7 @@ usersController.getFilteredUsers = (req, res, next) => {
     'SELECT * FROM users JOIN useractivities USING(user_id) WHERE activityname=$1 AND skilllevel=$2 AND gender=$3';
   db.query(filteredQuery, [activityName, skillLevel, gender])
     .then((data) => {
-      //  console.log('data:', data);
+      console.log('DATA:', data.rows);
       res.locals.data = data.rows;
       return next();
     })

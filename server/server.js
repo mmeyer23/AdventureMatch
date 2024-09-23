@@ -31,7 +31,8 @@ app.get(
   userCont.getFilteredUsers,
   cookieController.setCookie,
   (req, res) => {
-    console.log('got it again');
+    console.log('DATA2:' + res.locals.data);
+    console.log('First person:' + res.locals.data[0].firstname);
     return res.status(200).json(res.locals.data);
   }
 );
