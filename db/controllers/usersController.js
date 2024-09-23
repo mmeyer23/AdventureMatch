@@ -93,20 +93,56 @@ usersController.verifyUser = async (req, res, next) => {
 //       })
 //     );
 // };
+
+//gets users within a certain radius of a zip coded
+
+usersController.getUsersWithinRadius = async (req, res, next) => {
+  const { zipCode, radius } = req.query;
+  if (!zipCode || !radius) {
+    return next({
+      error: 'Zip Code and Radius are required',
+    });
+  }
+
+  try {
+    const { latitude, longitude } = await geocoder.geocode(zipCode);
+
+    //Haversine formula
+    const query = `
+      SELECT user_id, firstname, email, city, zipcode, gender, phone,
+        (6371 * acos(cos(radians($1)) * cos(radians(latitude)) * 
+        cos(radians(longitude) - radians($2)) + 
+        sin(radians($1)) * sin(radians(latitude)))) AS distance
+      FROM users
+      HAVING distance <= $3
+      ORDER BY distance;
+    `;
+
+    const results = await db.query(query, [latitude, longitude, radius]);
+    res.locals.results = results.json(results.rows);
+    return next();
+  } catch (err) {
+    console.error(err);
+    return next({
+      error: `${err.message} in usersController.getUsersWithinRadius`,
+    });
+  }
+};
+
 //finds user by email address
 usersController.getUsers = (req, res, next) => {
-  const {email} = req.body;
+  const { email } = req.body;
   const SQLQuery = 'SELECT * FROM users WHERE email = $1';
-  console.log('trying to get user')
+  console.log('trying to get user');
   db.query(SQLQuery, [email])
     .then((data) => {
       console.log(data.rows);
-      if(!data.rows[0]){
-       return next({
+      if (!data.rows[0]) {
+        return next({
           log: 'user not found in getUsersFunction',
           status: 404,
-          message: 'user not found'
-        })
+          message: 'user not found',
+        });
       }
       res.locals.data = data.rows;
       return next();
@@ -115,17 +151,15 @@ usersController.getUsers = (req, res, next) => {
 };
 //AS: deletes a user based on email address
 usersController.deleteUser = (req, res, next) => {
-  const {email} = req.body;
-  const SQLQuery = 'DELETE FROM users WHERE email = $1'
+  const { email } = req.body;
+  const SQLQuery = 'DELETE FROM users WHERE email = $1';
   db.query(SQLQuery, [email])
-  .then((data) => {
-    console.log('deleted:', data.rows)
-    res.locals.deleted = data.rows
-    return next()
-  })
-  .catch(err => next(err)
-  )
-}
-
+    .then((data) => {
+      console.log('deleted:', data.rows);
+      res.locals.deleted = data.rows;
+      return next();
+    })
+    .catch((err) => next(err));
+};
 
 module.exports = usersController;
