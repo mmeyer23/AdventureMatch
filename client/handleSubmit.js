@@ -15,6 +15,8 @@ const handleSubmit = async (
   gender,
   phone,
   setZipcodes,
+  distance,
+  setDistance,
   setEmail,
   setPassword,
   setConfirmPw,
@@ -57,11 +59,11 @@ const handleSubmit = async (
 
       const data = await response.json();
 
-      if (endpoint === '/main') {
-        console.log('HERE IS OUR DATA:' + data.rows);
-        //const zipcodeArray = data.map((obj) => obj.zipcode);
-        //console.log(zipcodeArray);
-      }
+      // if (endpoint === '/main') {
+      //   console.log('HERE IS OUR DATA:' + data.rows);
+      //const zipcodeArray = data.map((obj) => obj.zipcode);
+      //console.log(zipcodeArray);
+      // }
 
       if (endpoint === '/signup') {
         setEmail('');
@@ -81,11 +83,10 @@ const handleSubmit = async (
         //logic to auth the password
 
         if (data.string === 'password matched for this user') {
-          loginState();
-          navigate('/main');
-
           setEmail('');
           setPassword('');
+          loginState();
+          navigate('/main');
         } else {
           alert(
             'The password you entered does not match our record for this email address'
@@ -122,7 +123,7 @@ const handleSubmit = async (
       if (endpoint === '/main') {
         console.log('HERE IS OUR DATA:' + data.rows);
         const zipcodeArray = data.rows.map((obj) => obj.zipcode);
-        console.log(zipcodeArray);
+        setZipcodes(zipcodeArray);
       }
     } catch (error) {
       console.log('Error at handleSubmit', error);
