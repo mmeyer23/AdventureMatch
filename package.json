@@ -5,7 +5,7 @@
   "main": "server/server.js",
   "scripts": {
     "build": "webpack",
-    "test": "concurrently \"webpack serve --mode development\" \"node server/server.js\"",
+    "test": "concurrently \"webpack serve --mode development\" \"nodemon server/server.js\"",
     "start": "node server/server.js",
     "watch:build": "webpack -w",
     "watch:server": "nodemon server/server.js",

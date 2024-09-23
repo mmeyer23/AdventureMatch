@@ -168,14 +168,16 @@ usersController.getUsers = (req, res, next) => {
 };
 
 usersController.getFilteredUsers = (req, res, next) => {
-  const [activityName, skillLevel] = req.body.activity;
-  const { gender } = req.body;
+  const { activityName, skillLevel, gender } = req.query;
+  console.log('activity name:' + activityName);
+  // console.log('');
+  console.log('REQ PARAMS=' + req.query);
   const filteredQuery =
     'SELECT * FROM users JOIN useractivities USING(user_id) WHERE activityname=$1 AND skilllevel=$2 AND gender=$3';
   db.query(filteredQuery, [activityName, skillLevel, gender])
     .then((data) => {
-      console.log(data);
-      res.locals.data = data;
+      //  console.log('data:', data);
+      res.locals.data = data.rows;
       return next();
     })
     .catch((err) => next(err));
@@ -195,3 +197,4 @@ usersController.deleteUser = (req, res, next) => {
 };
 
 module.exports = usersController;
+//http://localhost:3000/main?activityname=Golf&skilllevel=Intermediate&gender=Male
