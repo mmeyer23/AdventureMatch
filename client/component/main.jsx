@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import handleA from '../handleActivity';
 import deleteA from '../deleteActivity';
-import { handleSubmit } from '../handleSubmit';
+import handleSubmit from '../handleSubmit';
+import resetEntryMain from '../resetEntryMain';
 
 export default function Main({
   activity,
@@ -150,9 +151,12 @@ export default function Main({
 
   return (
     <>
+      {' '}
+      <header id='header'></header>
       <form
         className='searchMain'
         onSubmit={(e) => {
+          e.preventDefault();
           handleSubmit(
             e,
             '/main',
@@ -170,12 +174,15 @@ export default function Main({
             gender,
             null, //phone
             setZipcodes
-          );
+          ).then(() => {
+            resetEntryMain(setCity, setZipCode, setGender, setSelectedA);
+          });
         }}
       >
         <label forhtml='searchActivity'>Choose an activity: </label>
         <select
           id='searchActivity'
+          className='allInput'
           value={activity}
           onChange={(e) => setActivity(e.target.value)}
         >
@@ -264,6 +271,8 @@ export default function Main({
         <label forhtml='city'>City: </label>
         <input
           id='city'
+          className='allInput'
+          value={city}
           type='text'
           required
           onChange={(e) => {
@@ -275,6 +284,8 @@ export default function Main({
         <label forhtml='zipcode'>Zip Code: </label>
         <input
           id='zipcode'
+          className='allInput'
+          value={zipCode}
           type='text'
           required
           onChange={(e) => {
@@ -286,6 +297,8 @@ export default function Main({
         <label forhtml='gender'>Gender: </label>
         <select
           in='gender'
+          className='allInput'
+          value={gender}
           required
           onChange={(e) => {
             setGender(e.target.value);
@@ -297,9 +310,10 @@ export default function Main({
           <option label='Male'>Male</option>
           <option label='Female'>Female</option>
         </select>
-        <button type='submit'>Search</button>
+        <button id='searchButton' type='submit'>
+          Search
+        </button>
       </form>
-
       <div id='map'></div>
     </>
   );
