@@ -99,15 +99,19 @@ const handleSubmit = async (
     }
   } else {
     try {
-      const response = await fetch(`http://localhost:3000/main`, {
+      const [[activityName, skillLevel]] = Object.entries(activity);
+      console.log('ACTIVITY:' + activity);
+      const params = new URLSearchParams({
+        activityName,
+        skillLevel,
+        gender,
+      }).toString();
+
+      const response = await fetch(`http://localhost:3000/main?${params}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          activity,
-          gender,
-        }),
       });
 
       if (!response.ok) {
