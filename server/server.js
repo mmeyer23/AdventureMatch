@@ -40,9 +40,9 @@ app.post('/signup', userCont.signUp, cookieController.setCookie, (req, res) => {
   return res.status(200).json(res.locals.success);
 });
 
-app.post('/main', (req, res) => {
-  res.status(200).json({ message: 'search criteria has been recevied' });
-});
+// app.post('/main', (req, res) => {
+//   res.status(200).json({ message: 'search criteria has been recevied' });
+// });
 
 //handles a post request form main that sends a ticket to the data base
 
