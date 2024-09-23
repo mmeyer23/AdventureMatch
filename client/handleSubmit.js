@@ -58,6 +58,11 @@ const handleSubmit = async (
 
     const data = await response.json();
 
+    if (endpoint === '/main') {
+      const zipcodeArray = data.map((obj) => obj.zipcode);
+      console.log(zipcodeArray);
+    }
+
     if (endpoint === '/signup') {
       setEmail('');
       setPassword('');
