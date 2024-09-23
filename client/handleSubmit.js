@@ -123,6 +123,7 @@ const handleSubmit = async (
       if (endpoint === '/main') {
         console.log('HERE IS OUR DATA:' + data.rows);
         const zipcodeArray = data.rows.map((obj) => obj.zipcode);
+        console.log(data.rows);
         setZipcodes(zipcodeArray);
       }
     } catch (error) {
