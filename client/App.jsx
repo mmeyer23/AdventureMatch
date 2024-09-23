@@ -19,6 +19,7 @@ export default function App() {
   const [skillLevel, setSkillLevel] = useState('');
   const [city, setCity] = useState('');
   const [zipCode, setZipCode] = useState('');
+  const [distance, setDistance] = useState('');
   const [gender, setGender] = useState('');
   const [phone, setPhone] = useState('');
   const [allActivities] = useState(['Golf', 'Hiking', 'Camping', 'Biking']);
@@ -129,6 +130,8 @@ export default function App() {
                   setCity={setCity}
                   zipCode={zipCode}
                   setZipCode={setZipCode}
+                  distance={distance}
+                  setDistance={setDistance}
                   gender={gender}
                   setGender={setGender}
                   phone={phone}
