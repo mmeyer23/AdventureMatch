@@ -118,10 +118,11 @@ const handleSubmit = async (
       }
 
       const data = await response.json();
+      // console.log(data);
 
       if (endpoint === '/main') {
-        console.log('HERE IS OUR DATA:' + data.rows);
-        const zipcodeArray = data.rows.map((obj) => obj.zipcode);
+        // console.log('HERE IS OUR DATA:' + data[0].zipcode);
+        const zipcodeArray = data.map((obj) => obj.zipcode);
         console.log(zipcodeArray);
       }
     } catch (error) {
