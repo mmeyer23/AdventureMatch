@@ -34,7 +34,7 @@ usersController.signUp = async (req, res, next) => {
 
     for (const [activityName, skillLevel] of Object.entries(activity)) {
       await db.query(
-        'INSERT INTO useractivities (userid, skilllevel, activityname) VALUES ($1, $2, $3)',
+        'INSERT INTO useractivities (user_id, activityname, skilllevel) VALUES ($1, $2, $3)',
         [userId, activityName, skillLevel]
       );
     }
@@ -161,6 +161,20 @@ usersController.getUsers = (req, res, next) => {
           message: 'user not found',
         });
       }
+      res.locals.data = data;
+      return next();
+    })
+    .catch((err) => next(err));
+};
+
+usersController.getFilteredUsers = (req, res, next) => {
+  const [activityName, skillLevel] = req.body.activity;
+  const { gender } = req.body;
+  const filteredQuery =
+    'SELECT * FROM users JOIN useractivities USING(user_id) WHERE activityname=$1 AND skilllevel=$2 AND gender=$3';
+  db.query(filteredQuery, [activityName, skillLevel, gender])
+    .then((data) => {
+      console.log(data);
       res.locals.data = data;
       return next();
     })

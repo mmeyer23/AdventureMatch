@@ -103,6 +103,10 @@ const handleSubmit = async (
         headers: {
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify({
+          activity,
+          gender,
+        }),
       });
 
       if (!response.ok) {

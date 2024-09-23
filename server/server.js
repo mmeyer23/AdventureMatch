@@ -26,10 +26,15 @@ app.post(
 
 //test get
 //AS: this set cookie middleware is currently working for this get request
-app.get('/main', userCont.getUsers, cookieController.setCookie, (req, res) => {
-  console.log('got it again');
-  return res.status(200).json(res.locals.data);
-});
+app.get(
+  '/main',
+  userCont.getFilteredUsers,
+  cookieController.setCookie,
+  (req, res) => {
+    console.log('got it again');
+    return res.status(200).json(res.locals.data);
+  }
+);
 
 //handle post
 
