@@ -13,15 +13,12 @@ app.use(express.json());
 
 //handler for post at login
 //AS: added middleware for creating cookie upon login - haven't tested yet
-app.post(
-  '/login',
-  userCont.verifyUser,
-  cookieController.setCookie,
-  (req, res) => {
-    console.log('received!');
-    return res.redirect('/main');
-  }
-);
+app.post('/login', userCont.verifyUser, cookieController.setCookie, (req, res) => {
+  console.log('logged in!');
+  //AS: sending string back to front if user is verified
+  return res.status(200).json({string: "password matched for this user"});
+});
+
 
 //test get
 //AS: this set cookie middleware is currently working for this get request
@@ -35,6 +32,7 @@ app.get('/', userCont.getUsers, cookieController.setCookie, (req, res) => {
 //handle post request for sign up
 //AS: not sure if we acutally need to create a cookie when they sign up.. probably just when they sign in?
 app.post('/signup', userCont.signUp, cookieController.setCookie, (req, res) => {
+  console.log('signed up!')
   return res.status(200).json(res.locals.success);
 });
 
@@ -45,6 +43,12 @@ app.post('/main', (req, res) => {
 //handles a post request form main that sends a ticket to the data base
 
 //handles a get request from main that sends any existing tickets to the feed
+
+//AS: ADDED DELETE ROUTE HANDLER
+app.delete('/delete', userCont.deleteUser, (req, res) => {
+  console.log('deleted!')
+  return res.status(200).json(res.locals.deleted)
+})
 
 // Global error handling middleware
 app.use((err, req, res, next) => {
