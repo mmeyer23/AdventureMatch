@@ -16,12 +16,9 @@ export default function Main({
   setZipCode,
   gender,
   setGender,
-  phone,
-  setPhone,
   allActivities,
   selectedA,
   setSelectedA,
-  zipcodes,
   setZipcodes,
 }) {
   const navigate = useNavigate();
@@ -80,6 +77,20 @@ export default function Main({
           //passing in map: which map this window should be displayed on
           //           marker: specify the anchor point of the info window
           infoWindow.open(map, marker);
+        });
+        addCircle(location);
+      };
+
+      const addCircle = (location) => {
+        const circle = new window.google.maps.Circle({
+          strokeColor: '#ACE1AF',
+          strokeOpacity: 0.8,
+          strokeWeight: 2,
+          fillColor: '#ACE1AF',
+          fillOpacity: 0.1,
+          map: map,
+          center: location,
+          radius: 5000,
         });
       };
 
