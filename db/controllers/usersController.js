@@ -93,7 +93,7 @@ usersController.verifyUser = async (req, res, next) => {
 //       })
 //     );
 // };
-
+//finds user by email address
 usersController.getUsers = (req, res, next) => {
   const {email} = req.body;
   const SQLQuery = 'SELECT * FROM users WHERE email = $1';
@@ -101,12 +101,31 @@ usersController.getUsers = (req, res, next) => {
   db.query(SQLQuery, [email])
     .then((data) => {
       console.log(data.rows);
+      if(!data.rows[0]){
+       return next({
+          log: 'user not found in getUsersFunction',
+          status: 404,
+          message: 'user not found'
+        })
+      }
       res.locals.data = data.rows;
       return next();
     })
     .catch((err) => next(err));
 };
-
+//AS: deletes a user based on email address
+usersController.deleteUser = (req, res, next) => {
+  const {email} = req.body;
+  const SQLQuery = 'DELETE FROM users WHERE email = $1'
+  db.query(SQLQuery, [email])
+  .then((data) => {
+    console.log('deleted:', data.rows)
+    res.locals.deleted = data.rows
+    return next()
+  })
+  .catch(err => next(err)
+  )
+}
 
 
 module.exports = usersController;
