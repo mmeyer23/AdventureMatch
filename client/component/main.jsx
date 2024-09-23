@@ -14,11 +14,14 @@ export default function Main({
   setCity,
   zipCode,
   setZipCode,
+  distance,
+  setDistance,
   gender,
   setGender,
   allActivities,
   selectedA,
   setSelectedA,
+  zipcodes,
   setZipcodes,
 }) {
   const navigate = useNavigate();
@@ -27,7 +30,7 @@ export default function Main({
   );
 
   useEffect(() => {
-    const zipcodes = ['90042', '90036', '90028', '91205'];
+    // const zipcodes = ['90042', '90036', '90028', '91205'];
     let map; // Declare map here
 
     const initMap = () => {
@@ -151,14 +154,14 @@ export default function Main({
         `script[src*="maps.googleapis.com"]`
       );
       //if there is such script, remove the script from the HTML document
-      if (script) {
+      if (script && document.body.contains(script)) {
         document.body.removeChild(script);
       }
       //this removes initMap from the window object
       //making sure there is no reference globally when the component is mounted again
       delete window.initMap;
     };
-  }, []);
+  }, [zipcodes]);
 
   return (
     <>
@@ -184,9 +187,16 @@ export default function Main({
             zipCode,
             gender,
             null, //phone
-            setZipcodes
+            setZipcodes,
+            distance
           ).then(() => {
-            resetEntryMain(setCity, setZipCode, setGender, setSelectedA);
+            resetEntryMain(
+              setCity,
+              setZipCode,
+              setGender,
+              setSelectedA,
+              setDistance
+            );
           });
         }}
       >
@@ -303,6 +313,20 @@ export default function Main({
             setZipCode(e.target.value);
           }}
         />
+        <label forhtml='className'>Distance: </label>
+        <select
+          className='allInput'
+          id='distance'
+          value={distance}
+          onChange={(e) => {
+            setDistance(e.target.value);
+          }}
+        >
+          <option value=''></option>
+          <option value='10'>10 miles</option>
+          <option value='25'>25 miles</option>
+          <option value='50'>50 mils</option>
+        </select>
 
         {/* get gender */}
         <label forhtml='gender'>Gender: </label>
