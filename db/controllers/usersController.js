@@ -34,7 +34,7 @@ usersController.signUp = async (req, res, next) => {
 
     for (const [activityName, skillLevel] of Object.entries(activity)) {
       await db.query(
-        'INSERT INTO useractivities (userid, skilllevel, activityname) VALUES ($1, $2, $3)',
+        'INSERT INTO useractivities (user_id, activityname, skilllevel) VALUES ($1, $2, $3)',
         [userId, activityName, skillLevel]
       );
     }
@@ -96,47 +96,64 @@ usersController.verifyUser = async (req, res, next) => {
 
 //gets users within a certain radius of a zip coded
 
-usersController.getUsersWithinRadius = async (req, res, next) => {
-  const { zipCode, radius } = req.query;
-  if (!zipCode || !radius) {
-    return next({
-      error: 'Zip Code and Radius are required',
-    });
-  }
+// usersController.getUsersWithinRadius = async (req, res, next) => {
+//   const { zipCode, radius } = req.query;
+//   if (!zipCode || !radius) {
+//     return next({
+//       error: 'Zip Code and Radius are required',
+//     });
+//   }
 
-  try {
-    const { latitude, longitude } = await geocoder.geocode(zipCode);
+//   //convert zip code to long and lat
+//   try {
 
-    //Haversine formula
-    const query = `
-      SELECT user_id, firstname, email, city, zipcode, gender, phone,
-        (6371 * acos(cos(radians($1)) * cos(radians(latitude)) * 
-        cos(radians(longitude) - radians($2)) + 
-        sin(radians($1)) * sin(radians(latitude)))) AS distance
-      FROM users
-      HAVING distance <= $3
-      ORDER BY distance;
-    `;
+//     // AIzaSyD-PDkwpDiPMXBbVIHKVtOT2pIjT9xyJ0U
 
-    const results = await db.query(query, [latitude, longitude, radius]);
-    res.locals.results = results.json(results.rows);
-    return next();
-  } catch (err) {
-    console.error(err);
-    return next({
-      error: `${err.message} in usersController.getUsersWithinRadius`,
-    });
-  }
-};
+//     // var lat = '';
+//     // var lng = '';
+//     // var address = {zipcode} or {city and state};
+//     // geocoder.geocode( { 'address': address}, function(results, status) {
+//     //   if (status == google.maps.GeocoderStatus.OK) {
+//     //      lat = results[0].geometry.location.lat();
+//     //      lng = results[0].geometry.location.lng();
+//     //     });
+//     //   } else {
+//     //     alert("Geocode was not successful for the following reason: " + status);
+//     //   }
+//     // });
+//     // alert('Latitude: ' + lat + ' Logitude: ' + lng);
+//     // const { latitude, longitude } = await geocoder.geocode(zipCode);
+
+//     //Haversine formula (WE NEED TO GO BACK AND CONVERT USERS ZIPCODE TO LONGITUTDE & LATITUDE VALUES WHEN THEY SIGN UP AND STORE IN TABLE)
+//     const query = `
+//       SELECT firstname, email, city, zipcode, gender, phone,
+//         (6371 * acos(cos(radians($1)) * cos(radians(latitude)) *
+//         cos(radians(longitude) - radians($2)) +
+//         sin(radians($1)) * sin(radians(latitude)))) AS distance
+//       FROM users
+//       HAVING distance <= $3
+//       ORDER BY distance;
+//     `;
+
+//     const results = await db.query(query, [latitude, longitude, radius]);
+//     res.locals.results = results.json(results.rows);
+//     return next();
+//   } catch (err) {
+//     console.error(err);
+//     return next({
+//       error: `${err.message} in usersController.getUsersWithinRadius`,
+//     });
+//   }
+// };
 
 //finds user by email address
 usersController.getUsers = (req, res, next) => {
   const { email } = req.body;
-  const SQLQuery = 'SELECT * FROM users WHERE email = $1';
-  console.log('trying to get user');
-  db.query(SQLQuery, [email])
+  const SQLQuery = 'SELECT * FROM users';
+
+  db.query(SQLQuery)
     .then((data) => {
-      console.log(data.rows);
+      console.log('rows:', data.rows);
       if (!data.rows[0]) {
         return next({
           log: 'user not found in getUsersFunction',
@@ -144,11 +161,28 @@ usersController.getUsers = (req, res, next) => {
           message: 'user not found',
         });
       }
+      res.locals.data = data;
+      return next();
+    })
+    .catch((err) => next(err));
+};
+
+usersController.getFilteredUsers = (req, res, next) => {
+  const { activityName, skillLevel, gender } = req.query;
+  console.log('activity name:' + activityName);
+  // console.log('');
+  console.log('REQ PARAMS=' + req.query);
+  const filteredQuery =
+    'SELECT * FROM users JOIN useractivities USING(user_id) WHERE activityname=$1 AND skilllevel=$2 AND gender=$3';
+  db.query(filteredQuery, [activityName, skillLevel, gender])
+    .then((data) => {
+      console.log('DATA:', data.rows);
       res.locals.data = data.rows;
       return next();
     })
     .catch((err) => next(err));
 };
+
 //AS: deletes a user based on email address
 usersController.deleteUser = (req, res, next) => {
   const { email } = req.body;
@@ -163,3 +197,4 @@ usersController.deleteUser = (req, res, next) => {
 };
 
 module.exports = usersController;
+//http://localhost:3000/main?activityname=Golf&skilllevel=Intermediate&gender=Male

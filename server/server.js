@@ -13,32 +13,42 @@ app.use(express.json());
 
 //handler for post at login
 //AS: added middleware for creating cookie upon login - haven't tested yet
-app.post('/login', userCont.verifyUser, cookieController.setCookie, (req, res) => {
-  console.log('logged in!');
-  //AS: sending string back to front if user is verified
-  return res.status(200).json({string: "password matched for this user"});
-});
-
+app.post(
+  '/login',
+  userCont.verifyUser,
+  cookieController.setCookie,
+  (req, res) => {
+    console.log('logged in!');
+    //AS: sending string back to front if user is verified
+    return res.status(200).json({ string: 'password matched for this user' });
+  }
+);
 
 //test get
 //AS: this set cookie middleware is currently working for this get request
-app.get('/', userCont.getUsers, cookieController.setCookie, (req, res) => {
-  console.log('got it again');
-  return res.status(200).json(res.locals.users);
-});
+app.get(
+  '/main',
+  userCont.getFilteredUsers,
+  cookieController.setCookie,
+  (req, res) => {
+    console.log('DATA2:' + res.locals.data);
+    console.log('First person:' + res.locals.data[0].firstname);
+    return res.status(200).json(res.locals.data);
+  }
+);
 
 //handle post
 
 //handle post request for sign up
 //AS: not sure if we acutally need to create a cookie when they sign up.. probably just when they sign in?
 app.post('/signup', userCont.signUp, cookieController.setCookie, (req, res) => {
-  console.log('signed up!')
+  console.log('signed up!');
   return res.status(200).json(res.locals.success);
 });
 
-app.post('/main', (req, res) => {
-  res.status(200).json({ message: 'search criteria has been recevied' });
-});
+// app.post('/main', (req, res) => {
+//   res.status(200).json({ message: 'search criteria has been recevied' });
+// });
 
 //handles a post request form main that sends a ticket to the data base
 
@@ -46,9 +56,9 @@ app.post('/main', (req, res) => {
 
 //AS: ADDED DELETE ROUTE HANDLER
 app.delete('/delete', userCont.deleteUser, (req, res) => {
-  console.log('deleted!')
-  return res.status(200).json(res.locals.deleted)
-})
+  console.log('deleted!');
+  return res.status(200).json(res.locals.deleted);
+});
 
 // Global error handling middleware
 app.use((err, req, res, next) => {

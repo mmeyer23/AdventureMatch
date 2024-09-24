@@ -9,12 +9,14 @@ const handleSubmit = async (
   loginState,
   firstName,
   confirmPw,
-  { activity },
+  { activity = null } = {},
   city,
   zipCode,
   gender,
   phone,
   setZipcodes,
+  // distance,
+  // setDistance,
   setEmail,
   setPassword,
   setConfirmPw,
@@ -28,57 +30,109 @@ const handleSubmit = async (
   setSelectedA
 ) => {
   e.preventDefault();
-
   if (endpoint === '/signup' && password !== confirmPw) {
     alert('Password does not match!');
     return;
   }
+  if (endpoint !== '/main') {
+    try {
+      const response = await fetch(`http://localhost:3000${endpoint}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          firstName,
+          activity,
+          city,
+          zipCode,
+          gender,
+          phone,
+        }),
+      });
 
-  try {
-    const response = await fetch(`http://localhost:3000${endpoint}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email,
-        password,
-        firstName,
-        activity,
-        city,
-        zipCode,
+      if (!response.ok) {
+        throw new Error('connection to server failed');
+      }
+
+      const data = await response.json();
+
+      // if (endpoint === '/main') {
+      //   console.log('HERE IS OUR DATA:' + data.rows);
+      //const zipcodeArray = data.map((obj) => obj.zipcode);
+      //console.log(zipcodeArray);
+      // }
+
+      if (endpoint === '/signup') {
+        console.log('this is setPhone in /signup', setPhone);
+
+        setEmail('');
+        setPassword('');
+        setConfirmPw('');
+        setFirstName('');
+        setActivity('');
+        setSkillLevel('');
+        setCity('');
+        setZipCode('');
+        setGender('');
+        setPhone('');
+        setSelectedA({});
+
+        navigate('/login');
+      } else if (endpoint === '/login') {
+        //logic to auth the password
+
+        if (data.string === 'password matched for this user') {
+          setEmail('');
+          setPassword('');
+          loginState();
+          navigate('/main');
+        } else {
+          alert(
+            'The password you entered does not match our record for this email address'
+          );
+        }
+      }
+    } catch (error) {
+      console.log('Error at handleSubmit', error);
+      alert(error.message);
+    }
+  } else {
+    try {
+      const [[activityName, skillLevel]] = Object.entries(activity);
+      console.log('ACTIVITY:' + activity);
+      const params = new URLSearchParams({
+        activityName,
+        skillLevel,
         gender,
-        phone,
-      }),
-    });
+      }).toString();
 
-    if (!response.ok) {
-      throw new Error('connection to server failed');
+      const response = await fetch(`http://localhost:3000/main?${params}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('connection to server failed');
+      }
+
+      const data = await response.json();
+      // console.log(data);
+
+      if (endpoint === '/main') {
+        // console.log('HERE IS OUR DATA:' + data[0].zipcode);
+        const zipcodeArray = data.map((obj) => obj.zipcode.toString());
+        // console.log(zipcodeArray);
+        setZipcodes(zipcodeArray);
+      }
+    } catch (error) {
+      console.log('Error at handleSubmit', error);
+      alert(error.message);
     }
-
-    const data = await response.json();
-
-    if (endpoint === '/signup') {
-      setEmail('');
-      setPassword('');
-      setConfirmPw('');
-      setFirstName('');
-      setActivity('');
-      setSkillLevel('');
-      setCity('');
-      setZipCode('');
-      setGender('');
-      setPhone('');
-      setSelectedA({});
-
-      navigate('/login');
-    }
-
-    //logic to auth the password
-  } catch (error) {
-    console.log('Error at handleSubmit', error);
-    alert(error.message);
   }
 };
-
 export default handleSubmit;
