@@ -1,5 +1,18 @@
 # AdventureMatch
 
+![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white)
+![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge&logo=postgresql&logoColor=white)
+![Webpack](https://img.shields.io/badge/Webpack-8DD6F9?style=for-the-badge&logo=webpack&logoColor=black)
+![Babel](https://img.shields.io/badge/Babel-F9DC3E?style=for-the-badge&logo=babel&logoColor=black)
+![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)
+![Concurrently](https://img.shields.io/badge/Concurrently-00BFB3?style=for-the-badge&logo=concurrently&logoColor=black)
+![Nodemon](https://img.shields.io/badge/Nodemon-76B900?style=for-the-badge&logo=nodemon&logoColor=white)
+![CSS Loader](https://img.shields.io/badge/CSS%20Loader-2A9D8F?style=for-the-badge&logo=css3&logoColor=white)
+![CORS](https://img.shields.io/badge/CORS-2E8B57?style=for-the-badge&logo=cors&logoColor=white)
+![Dotenv](https://img.shields.io/badge/dotenv-72A98D?style=for-the-badge&logo=dotenv&logoColor=white)
+
 **AdventureMatch** is a platform designed to connect people based on their hobbies and skill levels. By creating a personal profile with your favorite activities and skill levels, you can search for like-minded individuals nearby and plan adventures together!
 
 ## Features
