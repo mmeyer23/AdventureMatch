@@ -9,10 +9,10 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
 
 module.exports = {
   mode: 'development',
-  entry: './client/index.js', // Your entry point
+  entry: './client/index.js',
   output: {
-    path: path.resolve(__dirname, 'dist'), // Output directory
-    filename: 'bundle.js', // Output filename
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'bundle.js',
   },
 
   devServer: {
@@ -27,6 +27,13 @@ module.exports = {
     rules: [
       { test: /\.jsx?$/, use: 'babel-loader', exclude: /node_modules/ },
       { test: /\.css$/, use: ['style-loader', 'css-loader'] },
+      {
+        test: /\.(png|jpg|jpeg|gif)$/i,
+        type: 'asset/resource', // This will allow Webpack to handle images as resources
+        generator: {
+          filename: 'assets/images/[name][hash][ext][query]', // This defines where the image will be stored in the output folder
+        },
+      },
     ],
   },
   resolve: {
@@ -34,32 +41,3 @@ module.exports = {
   },
   plugins: [HtmlWebpackPluginConfig],
 };
-
-//webpack.config.js
-
-// const path = require('path');
-
-// const HtmlWebpackPlugin = require('html-webpack-plugin');
-// const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
-//   template: './client/index.html',
-//   filename: 'index.html',
-//   inject: 'body'
-// })
-
-// module.exports = {
-//     mode: 'development',
-//   entry: './client/index.js',
-//   output: {
-//     path: path.resolve('dist'),
-//     filename: 'index_bundle.js'
-//   },
-//   module: {
-//     rules: [
-//       { test: /\.js$/, use: 'babel-loader', exclude: /node_modules/ },
-//       { test: /\.jsx$/, use: 'babel-loader', exclude: /node_modules/ },
-//       { test: /\.css$/, use: ['style-loader','css-loader'],
-//       },
-//     ]
-//   },
-//   plugins: [HtmlWebpackPluginConfig]
-// }

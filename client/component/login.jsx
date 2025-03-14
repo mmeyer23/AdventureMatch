@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import handleSubmit from '../handleSubmit';
+import Logo from '../assets/images/adventureMatchLogoTrans.png';
 
 export default function Login({
   email,
@@ -63,6 +64,9 @@ export default function Login({
           );
         }}
       >
+        <div className='image-container'>
+          <img src={Logo} alt='Login illustration' className='login-image' />
+        </div>
         <label htmlFor='email'>Email: </label>
         <input
           id='email'

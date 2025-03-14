@@ -4,12 +4,11 @@ const path = require('path');
 const cors = require('cors');
 const PORT = 3000;
 const cookieController = require('../db/controllers/cookieController.js');
-//import usersController
 const userCont = require('../db/controllers/usersController.js');
 
-// parses JSON from incoming request
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
 
 //handler for post at login
 //AS: added middleware for creating cookie upon login - haven't tested yet

@@ -1,4 +1,4 @@
-const { Pool } = require('pg'); // Use require('pg') if using CommonJS
+const { Pool } = require('pg');
 
 const PG_URI =
   process.env.DATABASE_URI ||
@@ -15,11 +15,11 @@ module.exports = {
   query: async (text, params) => {
     console.log('executed query', text);
     try {
-      const res = await pool.query(text, params); // Use await to get result
-      return res; // Return the result
+      const res = await pool.query(text, params);
+      return res;
     } catch (err) {
       console.error('Database query error:', err);
-      throw err; // Rethrow the error for handling in controllers
+      throw err;
     }
   },
 };

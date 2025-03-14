@@ -1,6 +1,4 @@
 * {
-  /* background-color: #fceed1; */
-  /* border: 0.5px solid rgb(247, 0, 0); */
   margin: 0;
   padding: 0;
   font-family: 'Signika Negative', sans-serif;
@@ -12,7 +10,7 @@
 }
 
 body {
-  background-image: url('./img/8887805.jpg');
+  background-color: #53c0d4;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -23,7 +21,7 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  margin-top: 250px;
+  margin-top: 75px;
 }
 
 .signupInfo {
@@ -94,25 +92,47 @@ select.allInput:focus {
 }
 
 #header {
-  background: linear-gradient(
-    to bottom,
-    #9ac400ea,
-    rgba(255, 255, 255, 0)
-  ); /* this is cool technique to create faded color*/
+  background: linear-gradient(to bottom, #9ac400ea, rgba(255, 255, 255, 0));
   margin-top: 0;
-  height: 150px;
+  height: 100px;
 }
 
-#linkButton {
+#linkButton,
+#buttonButton {
   border: none;
   font-size: 16px;
-  background-color: #ffffff;
+  background-color: #9feb3f;
+  padding: 10px 20px;
+  border-radius: 10px;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  text-decoration: none;
+  color: black;
+  display: inline-block;
 }
 
-#buttonButton {
-  text-decoration: none;
+#linkButton:hover,
+#buttonButton:hover {
+  background-color: #87c730;
+  transform: scale(1.05);
+}
+
+#linkButton:active,
+#buttonButton:active {
+  background-color: #6da526;
+  transform: scale(0.95);
 }
 
 #distance {
   width: 120px;
+}
+
+.image-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.login-image {
+  width: 200px;
+  height: auto;
 }
